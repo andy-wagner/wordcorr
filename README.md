@@ -12,6 +12,8 @@ To compute global word-level co-occurrence stats, simply execute
 sh cooccur.sh <doc file> <num docs to sample> <output file> <min cut-off %ge> <max cut-off %ge>
 ``` 
 
+**Tip:** On Mac OS, change *shuf* in the script to *gshuf*.
+
 The arguments are explained as follows.
 1. **Doc File** is a text file, where each line is a document.
 2. **Sample size** is the number of documents you want to sample for co-occurrence computation. For some large document collections, this sampling makes the process much faster.

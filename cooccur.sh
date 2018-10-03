@@ -14,7 +14,7 @@ MAX=$5
 
 if [ ! -e $DOCFILE.$SAMPLE_SIZE ]
 then
-	cat $DOCFILE | gshuf | head -n$SAMPLE_SIZE > $DOCFILE.$SAMPLE_SIZE
+	cat $DOCFILE | shuf | head -n$SAMPLE_SIZE > $DOCFILE.$SAMPLE_SIZE
 fi
 
 echo "Finding co-occurrences between words..."
