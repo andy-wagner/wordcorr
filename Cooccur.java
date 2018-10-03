@@ -75,13 +75,10 @@ class Vocab {
 		System.out.println("Pruning vocabulary...");
 
 		int size = vocabSize();
-		ArrayList<TermFreq> vocabList = new ArrayList<>(size);	
 		int maxTf = 0;
 		for (TermFreq tf: termIdMap.values()) {
 			if (tf.freq > maxTf)
 				maxTf = tf.freq;
-
-			vocabList.add(tf);
 		}
 		
 		int minCutOff = (int)(maxTf * headp);
@@ -89,14 +86,14 @@ class Vocab {
 
 		System.out.println("Removing words with freq lower than " + minCutOff + " and higher than " + maxCutOff);
 
-		for (int i=0; i < size; i++) {
-			TermFreq tf = vocabList.get(i);
-			if (tf.freq > minCutOff && tf.freq < maxCutOff)
-				continue;
-
-			String word = getTerm(tf.termId);
-			termIdMap.remove(word);
-			idToStrMap.remove(tf.termId);
+		Iterator<Map.Entry<String, TermFreq>> iter = termIdMap.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry<String, TermFreq> entry = iter.next();
+			TermFreq tf = entry.getValue();	
+			if (tf.freq <= minCutOff || tf.freq >= maxCutOff) {
+				iter.remove();
+				idToStrMap.remove(tf.termId);
+			}
 		}
 
 		System.out.println("vocab reduced to size " + termIdMap.size());
@@ -113,6 +110,9 @@ class CooccurStats {
 	TermFreq b; 
 	float p;  // conditional probability
 
+	static final float ALPHA = 0.6f;
+	static final float ONE_MINUS_ALPHA = 1.0f - ALPHA;
+
 	CooccurStats(TermFreq a, TermFreq b) {
 		this.a = a;
 		this.b = b;
@@ -125,12 +125,14 @@ class CooccurStats {
 	}
 
 	void normalize(Vocab v) {
+
 		TermFreq atf = v.getTermFreq(v.getTerm(a.termId));
 		TermFreq btf = v.getTermFreq(v.getTerm(b.termId));
 		int dfa = atf.freq;
 		int dfb = btf.freq; // vocab gives coll freqs
 
-		p = p * (float)(Math.log(1 + (double)v.collectionSize/(double)(dfa + dfb)));
+		p = ALPHA*p;
+		p = p + (ONE_MINUS_ALPHA) * (float)(Math.log(1 + (double)v.collectionSize/(double)(dfa + dfb)));
 	}
 }
 
