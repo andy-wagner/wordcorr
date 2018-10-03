@@ -34,16 +34,16 @@ which runs the program on a 10% subset of the sample file, prunes of words with 
 
 The top-most 10 co-occurrences reported by the above invocation of the program are:
 ```
-species	family	3347.7932
-united	states	3048.0063
-district	village	2321.0142
-genus	family	2183.3386
-album	released	2076.6511
-census	population	1937.0870
-species	genus	1913.2327
-family	found	1895.1869
-family	moth	1722.2452
-directed	film	1704.0616
+family	species	387.1845
+states	united	347.5865
+village	district	272.7801
+released	album	229.7551
+family	genus	212.7923
+population	census	203.3827
+genus	species	199.7612
+county	district	198.8621
+family	found	194.8201
+population	district	194.0150
 ```
 
 
